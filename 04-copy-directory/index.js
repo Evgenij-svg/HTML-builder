@@ -1,12 +1,12 @@
 let fs = require("fs");
-const path = require("path");
-fs.mkdir("new_files", (err) => {
+
+fs.mkdir("./04-copy-directory/new_files", (err) => {
   if (err) throw err; // не удалось создать папку
 });
 
-fs.readdir("files", (err, files) => {
+fs.readdir("./04-copy-directory/files", (err, files) => {
   files.forEach((file) => {
-    fs.copyFile("files"+'/'+`${file}`,"new_files"+'/'+`${file}`, (err) => {
+    fs.copyFile("./04-copy-directory/files"+'/'+`${file}`,"./04-copy-directory/new_files"+'/'+`${file}`, (err) => {
       if (err) throw err; // не удалось скопировать файл
     });
   });

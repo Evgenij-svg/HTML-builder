@@ -3,7 +3,7 @@ let fs = require('fs');
 //     if (err) throw err
 //     console.log(data.toString())
 // })
-let stream=new fs.ReadStream('./text.txt')
+let stream=new fs.ReadStream('./01-read-file/text.txt')
 let flag=true;
 stream.on('readable',function(){
     if(flag){

@@ -22,9 +22,9 @@ console.log("02-write-file.txt to write");
 let flag = true;
 let str = " ";
 let exit=[]
-fs.watch("02-write-file.txt", (event, filename) => {
+fs.watch("./02-write-file/02-write-file.txt", (event, filename) => {
   if (filename) {
-    let stream = new fs.ReadStream("02-write-file.txt");
+    let stream = new fs.ReadStream("./02-write-file/02-write-file.txt");
     stream.on("readable", function () {
       let data = stream.read();
       if (!(data + "" == "null")) {
@@ -37,7 +37,7 @@ fs.watch("02-write-file.txt", (event, filename) => {
             
         }
         console.log(exit)
-        fs.writeFile("filename.txt", str, function (err) {
+        fs.writeFile("./02-write-file/filename.txt", str, function (err) {
             if (err) {
               console.log(err);
             }
