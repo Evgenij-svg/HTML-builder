@@ -1,48 +1,29 @@
-const fs = require("fs");
-// fs.readFile('text.txt',function(err,data){
-//     if (err) throw err
-//     console.log(data.toString())
-// })
 
-// let stream=new fs.ReadStream('textInput.txt')
-// let flag=true;
-// stream.on('readable',function(){
-//     if(flag){
-//         let data = stream.read();
-//         // fs.writeFile("02-write-file.txt", data+'');
-//         flag=false;
-//         return data+''
-//     }
+const { stdin: input, stdout: output } = process;
+const fs = require('fs');
+const path = require('path');
+const readline = require('readline');
 
-// })
+const exit = function() {
+    output.write('Good luck!\n');
+    process.exit(0);
+};
 
-console.log("02-write-file.txt to write");
+const outputFile = fs.createWriteStream(path.join(__dirname, 'log.txt'));
+const rl = readline.createInterface({ input, output });
 
+rl.question('Hello! Enter some text: \n', (text) => {
+    outputFile.write(text + '\n');
+});
 
-let flag = true;
-let str = " ";
-let exit=[]
-fs.watch("./02-write-file/02-write-file.txt", (event, filename) => {
-  if (filename) {
-    let stream = new fs.ReadStream("./02-write-file/02-write-file.txt");
-    stream.on("readable", function () {
-      let data = stream.read();
-      if (!(data + "" == "null")) {
-        str = data + "";
-        str.slice(0, -4)
-        exit=str.split(' ')
-        if(exit.includes('exit')){
-            console.log('bye')
-            process.exit()
-            
-        }
-        console.log(exit)
-        fs.writeFile("./02-write-file/filename.txt", str, function (err) {
-            if (err) {
-              console.log(err);
-            }
-          });
-      }
-    });
-  }
+rl.on('line', (text) => {
+    if (text == 'exit') {
+        rl.close();
+        exit();
+    }
+    outputFile.write(text + '\n');
+}).on('SIGINT', () => {
+    exit();
+}).on('close', () => {
+    exit();
 });

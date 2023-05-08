@@ -1,25 +1,28 @@
-let fs = require("fs");
 
-fs.mkdir("./04-copy-directory/new_files", (err) => {
-  if (err) throw err; // не удалось создать папку
-});
+const fsPromises = require("fs/promises");
+const path = require("path");
 
-fs.readdir("./04-copy-directory/files", (err, files) => {
-  files.forEach((file) => {
-    fs.copyFile("./04-copy-directory/files"+'/'+`${file}`,"./04-copy-directory/new_files"+'/'+`${file}`, (err) => {
-      if (err) throw err; // не удалось скопировать файл
+const srcFolderPath = path.join(__dirname, "files");
+const destFolderPath = path.join(__dirname, "files-copy");
+
+function copyDir() {
+  fsPromises.rm(destFolderPath, {recursive: true, force: true})
+  .then(() => {
+    fsPromises.mkdir(destFolderPath, { recursive: true })
+    .then(() => {
+      fsPromises.readdir(srcFolderPath, { withFileTypes: true })
+      .then((files) => {
+        files.forEach((file) => {
+            if (file.isFile()) {
+              fsPromises.copyFile(path.join(srcFolderPath, file.name), path.join(destFolderPath, file.name))
+              .catch(err => {
+                throw err;
+              });
+            }
+          });
+        });
     });
   });
-});
+}
 
-// fs.readdir("files", (err, files) => {
-//     files.forEach((file) => {
-//     //   console.log(file+'\t\t'+path.extname(file)+'\t\t'+fs.statSync('files/'+file).size)
-//     });
-//   });
-  
-
-// fs.copyFile('files', 'new_files', err => {
-//    if(err) throw err; // не удалось скопировать файл
-//    console.log('Файлы успешно скопирован');
-// });
+copyDir();

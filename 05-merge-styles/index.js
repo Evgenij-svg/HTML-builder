@@ -1,23 +1,32 @@
-const fs = require("fs");
-let str='';
-const path = require("path");
+const fs = require('fs');
+let str = '';
+const path = require('path');
 // Function to get current filenames
 // in directory
-fs.readdir("./05-merge-styles/styles", (err, files) => {
-  files.forEach((file) => {
+const Merge_style= path.join(__dirname, "styles");
+const test_files = path.join(__dirname, "project-dist/bundle.css");
 
-  if(path.extname(file)=='.css'){
-    const stream=new fs.ReadStream('./05-merge-styles/styles/'+file)   
-    stream.on('readable',function(){
-            let data = stream.read();
-            str = data+'' + str;
-            fs.writeFile("./05-merge-styles/test-files/bundle.css", str, function (err) {
-                if (err) {
-                  console.log(err);
-                }
-              });
-    })
-  }
+fs.readdir(Merge_style, (err, files) => {
+  files.forEach((file) => {
+    if (path.extname(file) == '.css') {
+      const stream = new fs.ReadStream(Merge_style+'/'+file);
+      console.log(stream)
+      stream.on('readable', function () {
+        let data = stream.read();
+        str = data + '' + str;
+        console.log(data)
+        fs.writeFile(
+        test_files,
+          str,
+          function (err) {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      });
+    }
   });
 });
-console.log(str)
+console.log(str);
+

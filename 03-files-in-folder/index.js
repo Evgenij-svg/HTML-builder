@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
-// Function to get current filenames
-// in directory
-fs.readdir("./03-files-in-folder/secret-folder", (err, files) => {
+
+fs.readdir(path.join(__dirname, "secret-folder"), (err, files) => {
+  if (err) throw err
   files.forEach((file) => {
-    console.log(file+'\t\t'+path.extname(file)+'\t\t'+(fs.statSync('./03-files-in-folder/secret-folder/'+file).size)/1024+'Kb')
-  });
+    console.log(file.split('.')[0]+'\t\t'+path.extname(file)+'\t\t'+(fs.statSync(path.join(__dirname, `secret-folder/${file}`)).size)/1024+'Kb')
+    });
 });
