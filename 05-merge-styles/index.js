@@ -9,12 +9,12 @@ const test_files = path.join(__dirname, "project-dist/bundle.css");
 fs.readdir(Merge_style, (err, files) => {
   files.forEach((file) => {
     if (path.extname(file) == '.css') {
-      const stream = new fs.ReadStream(Merge_style+'/'+file);
-      console.log(stream)
+      const stream = new fs.ReadStream(Merge_style+'/'+file,{ encoding: 'utf8' });
+      
       stream.on('readable', function () {
         let data = stream.read();
-        str = data + '' + str;
-        console.log(data)
+        if(data != null) str = data + '' + str;
+        
         fs.writeFile(
         test_files,
           str,
@@ -28,5 +28,5 @@ fs.readdir(Merge_style, (err, files) => {
     }
   });
 });
-console.log(str);
+
 

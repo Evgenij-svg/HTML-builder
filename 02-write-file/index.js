@@ -13,6 +13,10 @@ const outputFile = fs.createWriteStream(path.join(__dirname, 'log.txt'));
 const rl = readline.createInterface({ input, output });
 
 rl.question('Hello! Enter some text: \n', (text) => {
+    if (text == 'exit') {
+        rl.close();
+        exit();
+    }
     outputFile.write(text + '\n');
 });
 
